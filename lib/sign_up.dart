@@ -288,7 +288,9 @@ class _SignUpState extends State<SignUp> {
                                 borderRadius: BorderRadius.circular(10),
                             
                               ),
-                              onPressed: (){},
+                              onPressed: (){
+                                Navigator.pushNamed(context, '/homePage');
+                              },
                               child: Text(
                                 'Sign up',
                                 style: TextStyle(

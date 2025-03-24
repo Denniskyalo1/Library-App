@@ -61,6 +61,8 @@ flutter:
   assets:
     - Assets\Gradient Background.jpeg
     - Assets\logo.png
+    - Assets\defaultPfp.png
+    - Assets\menu.png
   
 
   # An image asset can refer to one or more resolution-specific "variants", see

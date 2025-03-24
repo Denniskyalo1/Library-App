@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:library_app/landing_page.dart';
 import 'package:library_app/sign_up.dart';
 import 'package:library_app/log_in.dart';
+import 'package:library_app/home_page.dart';
+import 'package:library_app/profile_page.dart';
+
+
 
 void main() {
   runApp(const MyApp());
@@ -18,6 +22,8 @@ class MyApp extends StatelessWidget {
         '/landing': (context) => const LandingPage(),
         '/signUp' : (context) => const SignUp(),
         '/login' : (context) => const LogIn(),
+        '/homePage': (context) => const HomePage(),
+        '/profile' : (context) => const ProfilePage(),
       },
       title: 'My Library App',
       debugShowCheckedModeBanner: false, 
