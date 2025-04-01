@@ -29,6 +29,12 @@ Future<void> _signUp() async {
   if (!mounted) return;
 
   if (response != null && response['status'].toString() == "200") {
+    if (response['token'] != null) {
+      await ApiService.saveToken(response['token']);
+    }
+
+  if(!mounted) return;
+
   showDialog(
   context: context,
   builder: (BuildContext dialogContext) {
@@ -52,14 +58,11 @@ Future<void> _signUp() async {
   },
 );
   } else {
-    if (response == null || response['status'] != 200) {
+    if (response == null || response['status'].toString() != "200") {
       _showErrorDialog(message: response?['message'] ?? 'Sign up failed. Try again.');
     }
   }
 }
-
-
-
 
 void _showErrorDialog({
   String message = 'Sign up failed, please try again'
