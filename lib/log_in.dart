@@ -33,7 +33,7 @@ class _LogInState extends State<LogIn> {
                     color: Color(0xFF0A8159),
                   ),
                   child: Center(
-                    child: Container(
+                    child: SizedBox(
                       width: width * 0.5,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,

@@ -4,6 +4,8 @@ import 'package:library_app/sign_up.dart';
 import 'package:library_app/log_in.dart';
 import 'package:library_app/home_page.dart';
 import 'package:library_app/profile_page.dart';
+import 'package:library_app/edit_profile.dart';
+
 
 
 
@@ -24,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/login' : (context) => const LogIn(),
         '/homePage': (context) => const HomePage(),
         '/profile' : (context) => const ProfilePage(),
+        '/editProfile' : (context) => const EditProfile(),
       },
       title: 'My Library App',
       debugShowCheckedModeBanner: false, 

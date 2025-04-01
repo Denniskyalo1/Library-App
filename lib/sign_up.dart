@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/api_service.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -9,6 +10,82 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _agreeToTerms = false;
+  bool _obscurePassword = true; 
+
+  
+Future<void> _signUp() async {
+
+  final response = await ApiService.register(
+    _nameController.text,
+    _emailController.text,
+    _passwordController.text,
+  );
+
+
+  if (!mounted) return;
+
+  if (response != null && response['status'].toString() == "200") {
+  showDialog(
+  context: context,
+  builder: (BuildContext dialogContext) {
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      content: const Text('Sign up successful!'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(dialogContext).pop(); // Close dialog
+            // Delay navigation slightly to avoid context issues
+            Future.delayed(Duration(milliseconds: 300), () {
+              if (mounted) {
+                Navigator.pushReplacementNamed(context, '/homePage');
+              }
+            });
+          },
+          child: const Text('Ok'),
+        ),
+      ],
+    );
+  },
+);
+  } else {
+    if (response == null || response['status'] != 200) {
+      _showErrorDialog(message: response?['message'] ?? 'Sign up failed. Try again.');
+    }
+  }
+}
+
+
+
+
+void _showErrorDialog({
+  String message = 'Sign up failed, please try again'
+  })
+   {
+    showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
@@ -33,7 +110,7 @@ class _SignUpState extends State<SignUp> {
                     color: Color(0xFF0A8159),
                   ),
                   child: Center(
-                    child: Container(
+                    child: SizedBox(
                       width: width * 0.5,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,15 +123,14 @@ class _SignUpState extends State<SignUp> {
                               image: DecorationImage(
                                 image: AssetImage('Assets/logo.png'),
                                 fit: BoxFit.cover,
-                                )
+                              ),
                             ),
-                            
                           ),
                           const Text(
                             "Shelfie",
                             style: TextStyle(
                               fontFamily: 'Lato',
-                              fontStyle:FontStyle.normal,
+                              fontStyle: FontStyle.normal,
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -112,6 +188,7 @@ class _SignUpState extends State<SignUp> {
                             width: width,
                             margin: const EdgeInsets.only(left: 30, top: 10, right: 30),
                             child: TextField(
+                              controller: _nameController,
                               cursorColor: Colors.black,
                               autocorrect: false,
                               style: const TextStyle(
@@ -150,6 +227,7 @@ class _SignUpState extends State<SignUp> {
                             width: width,
                             margin: const EdgeInsets.only(left: 30, top: 10, right: 30),
                             child: TextField(
+                              controller: _emailController,
                               cursorColor: Colors.black,
                               autocorrect: false,
                               style: const TextStyle(
@@ -188,8 +266,10 @@ class _SignUpState extends State<SignUp> {
                             width: width,
                             margin: const EdgeInsets.only(left: 30, top: 10, right: 30),
                             child: TextField(
+                              controller: _passwordController,
                               cursorColor: Colors.black,
                               autocorrect: false,
+                              obscureText: _obscurePassword, // Toggle visibility
                               style: const TextStyle(
                                 fontFamily: 'Lato',
                                 fontSize: 17,
@@ -217,6 +297,19 @@ class _SignUpState extends State<SignUp> {
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide.none,
                                 ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscurePassword = !_obscurePassword;
+                                    });
+                                  },
+                                ),
                               ),
                             ),
                           ),
@@ -227,8 +320,12 @@ class _SignUpState extends State<SignUp> {
                             child: Row(
                               children: [
                                 Checkbox(
-                                  value: false, 
-                                  onChanged: (bool? value) { },
+                                  value: _agreeToTerms,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _agreeToTerms = value ?? false;
+                                    });
+                                  },
                                 ),
                                 RichText(
                                   text: TextSpan(
@@ -242,14 +339,13 @@ class _SignUpState extends State<SignUp> {
                                       TextSpan(
                                         text: " privacy",
                                         style: TextStyle(
-                                          fontFamily:"Lato",
-                                           fontSize: 17,
-                                           color: Color(0xFF0A8159), 
+                                          fontFamily: "Lato",
+                                          fontSize: 17,
+                                          color: Color(0xFF0A8159),
                                         ),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap =(){
-                                            print('Tapped');
-                                          },
+                                        recognizer: TapGestureRecognizer()..onTap = () {
+                                          print('Privacy tapped');
+                                        },
                                       ),
                                       TextSpan(
                                         text: " and",
@@ -262,19 +358,18 @@ class _SignUpState extends State<SignUp> {
                                       TextSpan(
                                         text: " policy",
                                         style: TextStyle(
-                                          fontFamily:'Lato',
+                                          fontFamily: 'Lato',
                                           fontSize: 17,
                                           color: Color(0xFF0A8159),
                                         ),
-                                        recognizer: TapGestureRecognizer()
-                                         ..onTap = (){
-                                          print('Tapped');
-                                         }
-                                      )
-                                    ]
-                                  )
+                                        recognizer: TapGestureRecognizer()..onTap = () {
+                                          print('Policy tapped');
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ]
+                              ],
                             ),
                           ),
                           SizedBox(height: 20),
@@ -286,11 +381,8 @@ class _SignUpState extends State<SignUp> {
                               color: Color(0xFF0A8159),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
-                            
                               ),
-                              onPressed: (){
-                                Navigator.pushNamed(context, '/homePage');
-                              },
+                              onPressed: _agreeToTerms ? _signUp : null,
                               child: Text(
                                 'Sign up',
                                 style: TextStyle(
@@ -299,7 +391,6 @@ class _SignUpState extends State<SignUp> {
                                   color: Colors.white,
                                 ),
                               ),
-                            
                             ),
                           ),
                           SizedBox(height: 90),
@@ -308,31 +399,29 @@ class _SignUpState extends State<SignUp> {
                             width: width,
                             margin: const EdgeInsets.only(left: 100, top: 30),
                             child: Text.rich(
-                             TextSpan(
-                               text: "Already have an account? ",
-                               style: TextStyle(
-                               fontSize: 17,
-                               fontFamily: 'Lato',
-                               color: Colors.grey,
-                            ),
-                               children: [
-                                 TextSpan(
-                                  text: "Login",
-                                  style: TextStyle(
+                              TextSpan(
+                                text: "Already have an account? ",
+                                style: TextStyle(
                                   fontSize: 17,
                                   fontFamily: 'Lato',
-                                  color: Color(0xFF0A8159),
+                                  color: Colors.grey,
                                 ),
-                                  recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.pushNamed(context, '/login');
-                                },
+                                children: [
+                                  TextSpan(
+                                    text: "Login",
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: 'Lato',
+                                      color: Color(0xFF0A8159),
+                                    ),
+                                    recognizer: TapGestureRecognizer()..onTap = () {
+                                      Navigator.pushNamed(context, '/login');
+                                    },
+                                  ),
+                                ],
                               ),
-                              ],
                             ),
-                              ),
-                          )
-
+                          ),
                         ],
                       ),
                     ],

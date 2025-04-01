@@ -44,7 +44,7 @@ class _LandingPageState extends State<LandingPage> {
                   child: Text(
                     "Build your own book world",
                     style: TextStyle(
-                      fontFamily: 'Nunito',
+                      fontFamily: 'Lato',
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w700,
                       color: Colors.black,
