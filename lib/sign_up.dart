@@ -38,8 +38,7 @@ Future<void> _signUp() async {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(dialogContext).pop(); // Close dialog
-            // Delay navigation slightly to avoid context issues
+            Navigator.of(dialogContext).pop(); 
             Future.delayed(Duration(milliseconds: 300), () {
               if (mounted) {
                 Navigator.pushReplacementNamed(context, '/homePage');
