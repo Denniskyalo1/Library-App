@@ -33,11 +33,11 @@ Future<void> _signUp() async {
       await ApiService.saveToken(response['token']);
     }
 
-  if(!mounted) return;
+    if(!mounted) return;
 
-  showDialog(
-  context: context,
-  builder: (BuildContext dialogContext) {
+    showDialog(
+    context: context,
+    builder: (BuildContext dialogContext) {
     return AlertDialog(
       backgroundColor: Colors.white,
       content: const Text('Sign up successful!'),
@@ -57,11 +57,11 @@ Future<void> _signUp() async {
     );
   },
 );
-  } else {
+}else{
     if (response == null || response['status'].toString() != "200") {
       _showErrorDialog(message: response?['message'] ?? 'Sign up failed. Try again.');
     }
-  }
+}
 }
 
 void _showErrorDialog({

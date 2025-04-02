@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.0.103/Shelfie-new/public/api'; 
+  static const String baseUrl = 'http://192.168.0.106/Shelfie-new/public/api'; 
   static const Map<String, String> headers = {
     'Content-Type': 'application/json',
      'Accept': 'application/json', 
@@ -30,7 +30,30 @@ class ApiService {
       body: jsonEncode({'name': name, 'email': email, 'password': password}),
     );
 
-    
+     
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> decodedResponse = jsonDecode(response.body);
+
+  // Debugging
+      return decodedResponse;
+    } else {
+      return {'message': 'Error: ${response.statusCode}', 'status': response.statusCode};
+    }
+  } catch (e) {
+  
+    return {'message': 'Network error', 'status': 500};
+  }
+}
+
+static Future<Map<String, dynamic>?> login(String email, String password) async {
+  try {
+    final response = await http.post(
+      Uri.parse('$baseUrl/login'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email, 'password': password}),
+    );
+
+     
     if (response.statusCode == 200) {
       final Map<String, dynamic> decodedResponse = jsonDecode(response.body);
 
