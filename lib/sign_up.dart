@@ -24,8 +24,6 @@ Future<void> _signUp() async {
     _emailController.text,
     _passwordController.text,
   );
-
-
   if (!mounted) return;
 
   if (response != null && response['status'].toString() == "200") {
@@ -271,7 +269,7 @@ void _showErrorDialog({
                               controller: _passwordController,
                               cursorColor: Colors.black,
                               autocorrect: false,
-                              obscureText: _obscurePassword, // Toggle visibility
+                              obscureText: _obscurePassword, 
                               style: const TextStyle(
                                 fontFamily: 'Lato',
                                 fontSize: 17,
@@ -346,7 +344,7 @@ void _showErrorDialog({
                                           color: Color(0xFF0A8159),
                                         ),
                                         recognizer: TapGestureRecognizer()..onTap = () {
-                                          print('Privacy tapped');
+                                          
                                         },
                                       ),
                                       TextSpan(

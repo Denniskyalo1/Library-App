@@ -50,9 +50,8 @@ class _LandingPageState extends State<LandingPage> {
                       color: Colors.black,
                       fontSize: height * 0.05,
                       height: 1
-              
-                    
                     ),
+                    
                     
                   ),
                 ),

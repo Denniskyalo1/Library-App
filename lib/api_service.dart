@@ -56,7 +56,7 @@ static Future<Map<String, dynamic>?> login(String email, String password) async 
      
     if (response.statusCode == 200) {
       final Map<String, dynamic> decodedResponse = jsonDecode(response.body);
-
+      
   // Debugging
       return decodedResponse;
     } else {

@@ -1,16 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/books.dart';
+import 'package:library_app/store_user_details.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
-}
+ }
 
-class _HomePageState extends State<HomePage> {
+
+
+ class _HomePageState extends State<HomePage> {
   final TextEditingController searchbarcontroller = TextEditingController();
   String selectedCategory = 'Self Help';
+  
+  String name = '';
+  String email = '';
+  String token = '';
+
+  Future<Map<String,String>> userDetails() async{
+   Map<String, String?> userDetails = await UserDetails.getUserDetails();
+   return {
+    'Name': userDetails['name']??'',
+    'Email': userDetails['email']??'',
+    'Token': userDetails['token']??'',
+   };
+  }
+
+   @override
+   void initState() {
+    super.initState();
+    fetchUserDetails();
+    }
+
+  Future<void> fetchUserDetails() async {
+    final details = await userDetails();
+    print('Fetched details: $details'); 
+    setState(() {
+      name = details['Name'] ?? '';
+      email = details['Email'] ?? '';
+      token = details['Token'] ?? '';
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,8 +130,8 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Welcome back, Bunny',
+                     Text(
+                      'Welcome back, $name',
                       style: TextStyle(
                         fontFamily: 'Lato',
                         fontSize: 20,
