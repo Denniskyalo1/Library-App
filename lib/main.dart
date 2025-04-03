@@ -7,8 +7,6 @@ import 'package:library_app/profile_page.dart';
 import 'package:library_app/edit_profile.dart';
 
 
-
-
 void main() {
   runApp(const MyApp());
 }
@@ -27,6 +25,7 @@ class MyApp extends StatelessWidget {
         '/homePage': (context) => const HomePage(),
         '/profile' : (context) => const ProfilePage(),
         '/editProfile' : (context) => const EditProfile(),
+        
       },
       title: 'My Library App',
       debugShowCheckedModeBanner: false, 

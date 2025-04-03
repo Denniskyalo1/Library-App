@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/books.dart';
+import 'package:library_app/selected_book.dart';
 import 'package:library_app/store_user_details.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,7 +37,6 @@ class HomePage extends StatefulWidget {
 
   Future<void> fetchUserDetails() async {
     final details = await userDetails();
-    print('Fetched details: $details'); 
     setState(() {
       name = details['Name'] ?? '';
       email = details['Email'] ?? '';
@@ -249,54 +249,62 @@ class HomePage extends StatefulWidget {
                   child: Row(
                     children: filteredBooks.map((book) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 150, 
-                            height: 200, 
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 2
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                              image: DecorationImage(
-                                image: NetworkImage(book.image),
-                                fit: BoxFit.cover,
-                                onError: (exception, stackTrace) {
-                                  print('Failed to load image: ${book.image}');
-                                },
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context)=>SelectedBook(book: book))
+                          );
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 150, 
+                              height: 200, 
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 2
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(
+                                  image: NetworkImage(book.image),
+                                  fit: BoxFit.cover,
+                                  onError: (exception, stackTrace) {
+                                    print('Failed to load image: ${book.image}');
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          SizedBox(
-                            width: 150,
-                            child: Text(
-                              book.title,
+                            const SizedBox(height: 8),
+                            SizedBox(
+                              width: 150,
+                              child: Text(
+                                book.title,
+                                style: const TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              book.author,
                               style: const TextStyle(
                                 fontFamily: 'Lato',
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                fontSize: 14,
+                                color: Colors.grey,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            book.author,
-                            style: const TextStyle(
-                              fontFamily: 'Lato',
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     )).toList(),
                   ),
@@ -334,54 +342,61 @@ class HomePage extends StatefulWidget {
                   child: Row(
                     children: filteredBooks.map((book) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 150, 
-                            height: 200, 
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 2
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                              image: DecorationImage(
-                                image: NetworkImage(book.image),
-                                fit: BoxFit.cover,
-                                onError: (exception, stackTrace) {
-                                  print('Failed to load image: ${book.image}');
-                                },
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context)=>SelectedBook(book:book)));
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 150, 
+                              height: 200, 
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 2
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(
+                                  image: NetworkImage(book.image),
+                                  fit: BoxFit.cover,
+                                  onError: (exception, stackTrace) {
+                                    print('Failed to load image: ${book.image}');
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          SizedBox(
-                            width: 150,
-                            child: Text(
-                              book.title,
+                            const SizedBox(height: 8),
+                            SizedBox(
+                              width: 150,
+                              child: Text(
+                                book.title,
+                                style: const TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              book.author,
                               style: const TextStyle(
                                 fontFamily: 'Lato',
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                fontSize: 14,
+                                color: Colors.grey,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            book.author,
-                            style: const TextStyle(
-                              fontFamily: 'Lato',
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     )).toList(),
                   ),

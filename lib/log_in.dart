@@ -37,8 +37,9 @@ class _LogInState extends State<LogIn> {
       String userName = user['name'];
       String userEmail = user['email'];
       String authToken = response['token'] ?? '';
+      String role = response['role'] ?? '';
 
-      await UserDetails.storeUserDetails(userName, userEmail, authToken);
+      await UserDetails.storeUserDetails(userName, userEmail, authToken, role);
 
       if (!mounted) return;
 
@@ -243,11 +244,11 @@ class _LogInState extends State<LogIn> {
             child: Text.rich(
               TextSpan(
                 text: "Don't have an account? ",
-                style: const TextStyle(color: Colors.grey),
+                style: const TextStyle(color: Colors.grey, fontSize: 17, fontFamily: 'Lato'),
                 children: [
                   TextSpan(
                     text: "Sign Up",
-                    style: const TextStyle(color: Color(0xFF0A8159)),
+                    style: const TextStyle(color: Color(0xFF0A8159), fontSize: 17, fontFamily: 'Lato'),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () => Navigator.pushNamed(context, '/signUp'),
                   ),

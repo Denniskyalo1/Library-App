@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/api_service.dart';
+import 'package:library_app/store_user_details.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -15,9 +16,14 @@ class _SignUpState extends State<SignUp> {
   final _passwordController = TextEditingController();
   bool _agreeToTerms = false;
   bool _obscurePassword = true; 
+  bool _isLoading = false; 
 
   
 Future<void> _signUp() async {
+   setState(() {
+      _isLoading = true; 
+    });
+
 
   final response = await ApiService.register(
     _nameController.text,
@@ -26,10 +32,18 @@ Future<void> _signUp() async {
   );
   if (!mounted) return;
 
+  setState(() {
+      _isLoading = false; 
+  });
+
   if (response != null && response['status'].toString() == "200") {
-    if (response['token'] != null) {
-      await ApiService.saveToken(response['token']);
-    }
+      var user = response['user'];
+      String userName = user['name'];
+      String userEmail = user['email'];
+      String authToken = response['token'] ?? '';
+      String role = response['role'] ?? '';
+
+      await UserDetails.storeUserDetails(userName, userEmail, authToken, role);
 
     if(!mounted) return;
 
@@ -383,14 +397,23 @@ void _showErrorDialog({
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               onPressed: _agreeToTerms ? _signUp : null,
-                              child: Text(
-                                'Sign up',
-                                style: TextStyle(
-                                  fontFamily: 'Lato',
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              child: _isLoading
+                                ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Color(0xFF0A8159),
+                                    strokeWidth: 2,
+                                  ),
+                                )  
+                                : const Text(
+                                  'Sign up',
+                                  style: TextStyle(
+                                    fontFamily: 'Lato',
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                )                            
                             ),
                           ),
                           SizedBox(height: 90),

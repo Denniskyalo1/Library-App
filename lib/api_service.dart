@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.0.106/Shelfie-new/public/api'; 
+  static const String baseUrl = 'http://192.168.0.103/Shelfie-new/public/api'; 
   static const Map<String, String> headers = {
     'Content-Type': 'application/json',
      'Accept': 'application/json', 

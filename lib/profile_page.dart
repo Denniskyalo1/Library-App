@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/store_user_details.dart';
 
 
 class ProfilePage extends StatefulWidget{
@@ -12,6 +13,33 @@ class ProfilePage extends StatefulWidget{
 
 class _ProfilePageState extends State<ProfilePage>{
 
+  String name = '';
+  String email = '';
+  String token = '';
+
+  Future<Map<String,String>> userDetails() async{
+   Map<String, String?> userDetails = await UserDetails.getUserDetails();
+   return {
+    'Name': userDetails['name']??'',
+    'Email': userDetails['email']??'',
+    'Token': userDetails['token']??'',
+   };
+  }
+
+   @override
+   void initState() {
+    super.initState();
+    fetchUserDetails();
+    }
+
+  Future<void> fetchUserDetails() async {
+    final details = await userDetails();
+    setState(() {
+      name = details['Name'] ?? '';
+      email = details['Email'] ?? '';
+      token = details['Token'] ?? '';
+    });
+  }
 
   @override
   Widget build(BuildContext context){
@@ -45,8 +73,6 @@ class _ProfilePageState extends State<ProfilePage>{
                           Icons.chevron_left,
                           size: 30,
                           color: Color(0xFF0A8159),
-                          
-                    
                         ),
                         Text(
                           'Back',
@@ -101,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage>{
               width: width,
               height: height * 0.05,
               child: Text(
-                'Name',
+                name,
                 style:TextStyle(
                   fontFamily: 'Lato',
                   fontSize: 30,
@@ -117,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage>{
               margin: EdgeInsets.only(top: 60),
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.yellow,
+                color: Color(0xFF0A8159),
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25))
               ),
               child: Column(
